@@ -1,0 +1,41 @@
+<script>
+
+(function( $ ) {
+    'use strict';
+
+    $(document).ready(function(){
+      
+      $('form.wpcf7-form input[type=submit].wpcf7-submit').on('click', function(event){
+        let $form = $(this).closest('form.wpcf7-form');
+        
+        
+        $(':input',$form).each(function(){
+            let $this = $(this);
+            switch(true){
+              case $this.is(':checked'):
+                $this.prop("defaultChecked", true);
+                break;
+              case $this.is('select'):
+                let values = $this.val();
+                if(!$.isArray(values)) values = [values];
+                $('option', $this).each(function(){
+                  let $option = $(this);
+                  $option[0].defaultSelected= false;
+                  if(values.indexOf($option.val()) >= 0){
+                    $option[0].defaultSelected=true;
+                  }
+                });
+                break;
+              default:
+                $this.prop("defaultValue", $this.val());
+                break;
+            }
+        }); //input each
+
+      }); //submit click
+      
+    });//document ready
+
+})( jQuery );
+
+</script>
